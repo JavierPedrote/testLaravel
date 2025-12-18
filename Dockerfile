@@ -6,6 +6,9 @@ ENV PHP_OPCACHE_ENABLE=1 \
     PHP_OPCACHE_MEMORY_CONSUMPTION=128 \
     PHP_MEMORY_LIMIT=512M
 
+# Variable temporal para el build (evita error de URI malformada)
+ENV APP_URL=http://localhost
+
 # Directorio de trabajo
 WORKDIR /var/www/html
 
@@ -22,11 +25,6 @@ RUN mkdir -p storage/logs \
 
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Optimizaciones de Laravel
-RUN php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
 
 # Exponer puerto 80
 EXPOSE 80
